@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  app:
+    command: >
+      uvicorn app.main:app
+      --host 0.0.0.0
+      --port 8000
+      --reload
+    volumes:
+      - ./:/app        # bind mount per hot-reload
+    environment:
+      ENV: dev
+    ports:
+      - "8000:8000"    # espone l'app all'host (dev)
+  db:
+    ports:
+      - "5432:5432"    # opzionale in dev per connettersi da host
+  redis:
+    ports:
+      - "6379:6379"    # opzionale in dev per debug da host

@@ -1,0 +1,7 @@
+fastapi[standard]==0.116.1
+SQLAlchemy[asyncio]==2.0.43
+asyncpg==0.30.0
+pydantic-settings==2.10.1
+python-dotenv==1.1.1
+alembic==1.16.5
+redis==6.4.0

@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  app:
+    command: >
+      gunicorn -k uvicorn.workers.UvicornWorker
+      -w 4
+      -b 0.0.0.0:8000
+      app.main:app
+    environment:
+      ENV: prod
+    volumes: []         # rimuove bind mount in prod
+    ports:
+      - "8000:8000"     # espone solo l'app
+    restart: unless-stopped
+  db:
+    ports: []           # non esporre Postgres all'esterno in prod
+    restart: unless-stopped
+  redis:
+    ports: []           # non esporre Redis all'esterno in prod
+    restart: unless-stopped
