@@ -1,206 +1,208 @@
-# 📘 README — Setup FastAPI (async + Postgres + Redis) su Windows
+# 📘 Documentazione Progetto FastAPI (MVC + Repository + ORM)
 
-## ✅ Requisiti
-- **Python 3.13**
-- **pip 25.2**
-- **Docker Desktop** (per Docker/Compose)
-- **PowerShell** (consigliato)  
+## ✅ Obiettivi
+- Architettura **MVC** con **pattern Repository**.  
+- **SQLAlchemy async** come ORM.  
+- Router centralizzato: ogni rotta definisce **URL, controller, autenticazione e ruoli**.  
+- **Uploads** di file (immagini, CSV, PDF) salvati su disco (`app/Uploads/`), con **URL salvato nel DB** e file serviti come statici.  
+- Ambiente gestito con **Docker Compose** (Postgres, Redis, FastAPI, pgAdmin).  
+- Separazione tra **sviluppo** (hot-reload, bind mount) e **produzione** (immagine chiusa, gunicorn workers).
 
 ---
 
-## 1️⃣ Ambiente virtuale (Windows)
+## 📦 Librerie usate
+- **FastAPI [standard]** → web framework + server ASGI (uvicorn, httptools, uvloop, ecc.).  
+- **SQLAlchemy [asyncio]** → ORM asincrono.  
+- **asyncpg** → driver PostgreSQL asincrono.  
+- **pydantic-settings** → configurazione tipizzata da env/.env.  
+- **python-dotenv** → carica file `.env` (solo sviluppo).  
+- **alembic** → migrazioni database.  
+- **redis** → client Redis (cache, rate limiting, code).  
 
-```powershell
-python -m venv venv
+---
+
+## 🏗️ Struttura del progetto
 ```
-Crea un ambiente virtuale nella cartella `venv\`.
+app/
+├─ main.py              # entrypoint FastAPI
+├─ config.py            # settings globali
+├─ Infrastructure/      # infrastruttura tecnica (DB, Redis, email, ecc.)
+│  └─ db.py
+├─ Models/              # ORM models (SQLAlchemy)
+│  ├─ base.py
+│  └─ user.py
+├─ Schemas/             # Schemi Pydantic (input/output API)
+│  ├─ user.py
+│  └─ auth.py
+├─ Repositories/        # Pattern Repository
+│  ├─ user_repository.py
+│  └─ user_sqlalchemy.py
+├─ Services/            # Business logic
+│  └─ user_service.py
+├─ Controllers/         # Logica API (usa Services)
+│  ├─ users_controller.py
+│  └─ files_controller.py
+├─ Router/              # Router centralizzato + auth/roles
+│  ├─ auth.py
+│  └─ routes.py
+├─ Utils/               # utility comuni
+│  ├─ hashing.py
+│  └─ pagination.py
+└─ Uploads/             # cartella file caricati
+```
 
+---
+
+## 📂 Ruolo delle cartelle
+
+- **Infrastructure/** → dettagli tecnici (DB engine, Redis client, integrazioni esterne).  
+- **Models/** → definizione entità (ORM).  
+- **Schemas/** → validazione input/output API (Pydantic).  
+- **Repositories/** → accesso ai dati (contratto + implementazione SQLAlchemy).  
+- **Services/** → logica di business, usa i repository.  
+- **Controllers/** → orchestrano le richieste HTTP, dipendenze e risposte.  
+- **Router/** → registra tutte le rotte con: path, metodo, controller, auth e ruoli.  
+- **Utils/** → funzioni comuni (hashing, pagination, ecc.).  
+- **Uploads/** → cartella per file caricati (servita come static path).  
+
+---
+
+## 🔄 Flow delle richieste (esempio `/api/v1/users`)
+1. **Router** → definisce che `/users` (POST) va a `UsersController.create_user`, richiede auth ruolo `admin`.  
+2. **Controller** → riceve input validato (schema), chiama `UserService`.  
+3. **Service** → applica logica (es. check email univoca), usa `UserRepository`.  
+4. **Repository** → interroga il DB tramite SQLAlchemy async.  
+5. **Model** → mappa il risultato.  
+6. **Schema** → converte entità in JSON di output.  
+
+---
+
+## 🔑 Autenticazione e Ruoli
+- Dipendenza `require_auth(roles=[...])` applicata automaticamente dal Router.  
+- Attualmente demo: header `X-Role` (`admin`, `manager`, `user`).  
+- In produzione → sostituibile con JWT/OAuth2 senza cambiare Controller/Router.  
+
+---
+
+## 📂 Uploads
+- Endpoint `/api/v1/files/upload` → salva file in `app/Uploads/`.  
+- Restituisce `{"url": "/uploads/<nomefile>"}`.  
+- FastAPI serve `/uploads/*` come **static files**.  
+- Nel DB salvi solo l’URL, non il file binario.  
+
+---
+
+## ⚙️ Configurazione
+### `.env`
+```env
+APP_NAME=My FastAPI App
+ENV=dev
+
+POSTGRES_USER=appuser
+POSTGRES_PASSWORD=apppass
+POSTGRES_DB=appdb
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+DATABASE_URL=postgresql+asyncpg://appuser:apppass@db:5432/appdb
+
+DB_POOL_SIZE=20
+DB_MAX_OVERFLOW=20
+DB_POOL_TIMEOUT=30
+DB_POOL_RECYCLE=1800
+
+UPLOADS_DIR=app/Uploads
+UPLOADS_URL_PREFIX=/uploads
+
+PGADMIN_DEFAULT_EMAIL=admin@example.com
+PGADMIN_DEFAULT_PASSWORD=admin
+```
+
+---
+
+## 🐳 Docker Compose
+
+### File principali
+- `docker-compose.yml` → definizione base (app + db + redis + pgAdmin).  
+- `docker-compose.override.yml` → dev (bind mount, `--reload`, porte aperte per db/redis).  
+- `docker-compose.prod.yml` → prod (gunicorn, niente bind, db/redis interni).  
+- `Dockerfile` → immagine base Python 3.13.  
+- `.env.example` → template delle variabili.
+
+### Healthcheck
+- **app** → `curl http://localhost:8000/`  
+- **db** → `pg_isready -U $POSTGRES_USER`  
+- **redis** → `redis-cli ping`
+
+---
+
+## ▶️ Avvio
+
+### Dev (hot reload)
+```powershell
+docker compose up -d --build
+# usa docker-compose.yml + docker-compose.override.yml
+```
+
+### Prod
+```powershell
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+```
+
+---
+
+## 🧑‍💻 Avvio locale senza Docker
 ```powershell
 .\venv\Scripts\Activate.ps1
-```
-Attiva il venv in PowerShell:
-- modifica `PATH` → usa python/pip del venv  
-- imposta `VIRTUAL_ENV`  
-- aggiunge `(venv)` al prompt  
-
-> Se PowerShell blocca lo script:
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
-```
-
-In **cmd.exe** invece:  
-```cmd
-venv\Scripts\activate.bat
-```
-
----
-
-## 2️⃣ Versioni Python e pip
-
-```powershell
-python --version   # es. Python 3.13.x
-pip --version      # es. pip 25.2
-pip install --upgrade pip
-```
-
----
-
-## 3️⃣ Installazione dipendenze
-
-```powershell
-pip install "fastapi[standard]"
-# FastAPI + uvicorn (con extras: uvloop, httptools, watchfiles),
-# python-multipart, jinja2, pyyaml, itsdangerous
-```
-
-```powershell
-pip install sqlalchemy[asyncio]
-# SQLAlchemy 2.x async (AsyncSession, create_async_engine)
-```
-
-```powershell
-pip install asyncpg
-# Driver asincrono PostgreSQL
-```
-
-```powershell
-pip install pydantic-settings
-# Settings da variabili/env con Pydantic v2
-```
-
-```powershell
-pip install python-dotenv
-# Carica automaticamente variabili da .env (utile in sviluppo)
-```
-
-```powershell
-pip install alembic
-# Migrazioni database
-```
-
-```powershell
-pip install redis
-# Client Redis (caching, rate limiting, queue)
-```
-
----
-
-## 4️⃣ Gestione dipendenze
-
-```powershell
-pip list
-```
-
-```powershell
-pip freeze > requirements.txt
-# salva le versioni correnti in requirements.txt
-```
-
-```powershell
-pip install -r requirements.txt
-# ricrea l’ambiente con le stesse versioni
-```
-
----
-
-## 5️⃣ Struttura progetto
-
-```powershell
-mkdir app, app\api, app\api\v1, app\domain, app\domain\models, app\domain\repositories, app\infrastructure, app\infrastructure\repositories, app\schemas, app\services
-```
-
-```powershell
-New-Item app\main.py -ItemType File
-```
-
-```powershell
-Copy-Item .env.example .env
-# copia e personalizza le variabili ambiente
-```
-
----
-
-## 6️⃣ Migrazioni con Alembic
-
-```powershell
-alembic init alembic
-```
-
-- In `alembic.ini` → configura `sqlalchemy.url` (o usa `DATABASE_URL` da `.env`)  
-- In `alembic/env.py` → importa la tua `Base` e imposta `target_metadata = Base.metadata`  
-
-```powershell
-alembic revision -m "init" --autogenerate
-alembic upgrade head
-```
-
----
-
-## 7️⃣ Avvio locale (sviluppo)
-
-```powershell
 uvicorn app.main:app --reload
 ```
 
-- [http://127.0.0.1:8000/](http://127.0.0.1:8000/) → health  
-- [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) → Swagger UI  
-- [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc) → ReDoc  
+---
+
+## ⚡ Best Practices (alto traffico)
+
+- **Workers**: `gunicorn -w N -k uvicorn.workers.UvicornWorker`  
+  - N ≈ n° core CPU (fino a 1.5× se I/O-bound).  
+- **Connection Pool**: `(pool_size × workers) ≤ max_connections PostgreSQL`.  
+- **Cache Redis**: usa per query frequenti, invalidazione su update.  
+- **Migrazioni**: sempre con `alembic revision --autogenerate` + `alembic upgrade head`.  
+- **Logging/Monitoring**: log JSON, Prometheus metrics, OpenTelemetry tracing.  
+- **Sicurezza**: CORS limitato, validazione Pydantic, limiti payload, upload sicuri.  
+- **Task lenti**: spostati su Celery/RQ con Redis (non bloccare request).  
 
 ---
 
-## 8️⃣ Docker Compose
+## 📌 Esempio API
 
-Assicurati che **Docker Desktop** sia avviato.  
-
-```powershell
-# Sviluppo (hot-reload, bind mount, porte aperte per debug)
-docker compose up -d --build
-# avvia app + Postgres + Redis (+ pgAdmin se incluso)
-# Usa automaticamente docker-compose.yml + docker-compose.override.yml
-
-# Produzione (immagine chiusa, niente bind mount, solo porta app)
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
-
+### Creazione utente
+```http
+POST /api/v1/users
+Headers:
+  X-Role: admin
+Body:
+{
+  "email": "alice@example.com",
+  "full_name": "Alice Rossi",
+  "role": "manager"
+}
 ```
 
-```powershell
-docker compose logs -f app
-# log dell’app FastAPI
+### Upload file
+```http
+POST /api/v1/files/upload
+Headers:
+  X-Role: user
+Body (multipart/form-data):
+  file=@report.pdf
 ```
-
-```powershell
-docker compose ps
-# stato dei container
-```
-
-```powershell
-docker compose exec app alembic upgrade head
-# applica migrazioni nel container
-```
-
-```powershell
-curl http://127.0.0.1:8000/
-# test rapido → {"status":"ok"}
-```
-
-Stop:
-
-```powershell
-docker compose down     # ferma container (mantiene dati DB)
-docker compose down -v  # rimuove anche volumi (reset DB)
+Risposta:
+```json
+{"url": "/uploads/20250302123456_report.pdf", "filename": "20250302123456_report.pdf"}
 ```
 
 ---
 
-## 9️⃣ Note operative (alto traffico)
-
-- **Workers & pool DB**: dimensiona `pool_size`/`max_overflow` in base ai workers.  
-  Esempio (Linux/prod):  
-  ```bash
-  gunicorn -k uvicorn.workers.UvicornWorker -w 4 -b 0.0.0.0:8000 app.main:app
-  ```
-- **Produzione**: niente `--reload`, niente volume bind → builda immagine finale.  
-- **Caching**: Redis per query frequenti o rate limiting.  
-- **Monitoraggio**: log strutturati, Prometheus, OpenTelemetry.  
-- **Sicurezza**: CORS, limiti payload, validazione Pydantic.  
-- **Task lenti**: Celery/RQ + Redis (non bloccare request HTTP).  
+## 🔮 Estensioni future
+- Sostituire header `X-Role` con **JWT/OAuth2**.  
+- Aggiungere repository per altre entità (es. `Product`, `Order`).  
+- Aggiungere **service layer Redis** per caching avanzata.  
+- Deploy con **Kubernetes** (Compose → Helm chart).  
