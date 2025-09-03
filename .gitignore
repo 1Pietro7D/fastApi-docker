@@ -1,1 +1,5 @@
 .env
+# Bytecode compilati da Python
+__pycache__/
+*.py[cod]
+*$py.class
