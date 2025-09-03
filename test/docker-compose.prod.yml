@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  app:
+    environment:
+      ENV: prod
+      GUNICORN_WORKERS: "4"
+      GUNICORN_TIMEOUT: "60"
+    restart: unless-stopped

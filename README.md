@@ -1,208 +1,215 @@
-# 📘 Documentazione Progetto FastAPI (MVC + Repository + ORM)
+# 🚀 FastAPI MVC + Repository (async) — Supabase DB + Auth (JWKS)
 
-## ✅ Obiettivi
-- Architettura **MVC** con **pattern Repository**.  
-- **SQLAlchemy async** come ORM.  
-- Router centralizzato: ogni rotta definisce **URL, controller, autenticazione e ruoli**.  
-- **Uploads** di file (immagini, CSV, PDF) salvati su disco (`app/Uploads/`), con **URL salvato nel DB** e file serviti come statici.  
-- Ambiente gestito con **Docker Compose** (Postgres, Redis, FastAPI, pgAdmin).  
-- Separazione tra **sviluppo** (hot-reload, bind mount) e **produzione** (immagine chiusa, gunicorn workers).
+Backend **FastAPI** interamente **asincrono** con architettura **MVC + Repository** e **SQLAlchemy 2.0 async**.
 
----
-
-## 📦 Librerie usate
-- **FastAPI [standard]** → web framework + server ASGI (uvicorn, httptools, uvloop, ecc.).  
-- **SQLAlchemy [asyncio]** → ORM asincrono.  
-- **asyncpg** → driver PostgreSQL asincrono.  
-- **pydantic-settings** → configurazione tipizzata da env/.env.  
-- **python-dotenv** → carica file `.env` (solo sviluppo).  
-- **alembic** → migrazioni database.  
-- **redis** → client Redis (cache, rate limiting, code).  
+- **DB**: PostgreSQL su **Supabase** (`asyncpg`, `sslmode=require`)
+- **Auth seria**: verifica **JWT RS256** via **JWKS** di Supabase (offline, scalabile)
+- **Modello dati**: `auth.users` (di Supabase) + `public.roles` + **ponte** `public.user_roles`
+- **CRUD Users**: lista, dettaglio, crea (via **service** Supabase), aggiorna, elimina
+- **Qualità**: test `pytest`/`pytest-asyncio`/`httpx`, separazione conf/ambienti
+- **Niente Docker** in questa versione (solo comandi locali Windows)
 
 ---
 
-## 🏗️ Struttura del progetto
+## ✅ Requisiti
+- **Python 3.13**
+- **pip 25.2**
+- **PowerShell** (Windows)
+
+---
+
+## 🧱 Struttura del progetto
+mkdir app, app\Infrastructure, app\Models, app\Schemas, app\Repositories, app\Services, app\Controllers, app\Router, app\Utils, tests, db, db\sql
+
 ```
 app/
-├─ main.py              # entrypoint FastAPI
-├─ config.py            # settings globali
-├─ Infrastructure/      # infrastruttura tecnica (DB, Redis, email, ecc.)
-│  └─ db.py
-├─ Models/              # ORM models (SQLAlchemy)
-│  ├─ base.py
-│  └─ user.py
-├─ Schemas/             # Schemi Pydantic (input/output API)
-│  ├─ user.py
-│  └─ auth.py
-├─ Repositories/        # Pattern Repository
-│  ├─ user_repository.py
-│  └─ user_sqlalchemy.py
-├─ Services/            # Business logic
-│  └─ user_service.py
-├─ Controllers/         # Logica API (usa Services)
-│  ├─ users_controller.py
-│  └─ files_controller.py
-├─ Router/              # Router centralizzato + auth/roles
-│  ├─ auth.py
-│  └─ routes.py
-├─ Utils/               # utility comuni
-│  ├─ hashing.py
-│  └─ pagination.py
-└─ Uploads/             # cartella file caricati
+├─ main.py                         # Entrypoint FastAPI
+├─ config.py                       # Settings (env, DB, JWKS)
+├─ Infrastructure/
+│  ├─ db.py                        # Engine/session SQLAlchemy async (Supabase)
+│  ├─ jwks.py                      # Fetch JWKS (cache)
+│  └─ supabase_service.py          # Service per signup/patch via Admin API (async httpx)
+├─ Models/
+│  ├─ auth_user.py                 # Mappatura auth.users (schema=auth)
+│  ├─ role.py                      # public.roles
+│  └─ user_role.py                 # public.user_roles (ponte)
+├─ Schemas/
+│  ├─ auth_user.py                 # Pydantic (read/update sicuro per auth.users)
+│  ├─ role.py                      # Pydantic per roles
+│  └─ user_role.py                 # Pydantic per assegnazioni
+├─ Repositories/
+│  ├─ auth_user_repository.py      # Repo async su auth.users (read/update/delete)
+│  ├─ role_repository.py           # Repo async su roles
+│  └─ user_role_repository.py      # Repo async su user_roles (ponte)
+├─ Services/
+│  ├─ user_service.py              # Business utenti (usa repo + supabase_service)
+│  └─ role_service.py              # Business ruoli/assegnazioni
+├─ Controllers/
+│  ├─ users_controller.py          # CRUD utenti (lista/dettaglio/update/delete + create via service)
+│  ├─ roles_controller.py          # CRUD ruoli
+│  └─ user_roles_controller.py     # Assegna/rimuovi ruoli
+├─ Router/
+│  ├─ auth.py                      # Dependency: verifica JWT via JWKS + require_roles(["admin"])
+│  └─ routes.py                    # Registro centralizzato rotte (prefix /api/v1)
+└─ Utils/
+   ├─ jwt_verify_supabase.py       # Verifica RS256 con JWKS
+   └─ pagination.py                # utilità generiche
+
+db/
+└─ sql/
+   └─ 001_roles.sql                # DDL per public.roles + public.user_roles (FK → auth.users)
+
+tests/
+├─ conftest.py                     # Lifespan app + AsyncClient httpx
+├─ test_health.py                  # Smoke test “/”
+├─ test_roles.py                   # Test CRUD ruoli (admin)
+└─ test_users_crud.py              # Test CRUD utenti
 ```
 
 ---
 
-## 📂 Ruolo delle cartelle
+## 📁 Crea la struttura (Windows / PowerShell)
 
-- **Infrastructure/** → dettagli tecnici (DB engine, Redis client, integrazioni esterne).  
-- **Models/** → definizione entità (ORM).  
-- **Schemas/** → validazione input/output API (Pydantic).  
-- **Repositories/** → accesso ai dati (contratto + implementazione SQLAlchemy).  
-- **Services/** → logica di business, usa i repository.  
-- **Controllers/** → orchestrano le richieste HTTP, dipendenze e risposte.  
-- **Router/** → registra tutte le rotte con: path, metodo, controller, auth e ruoli.  
-- **Utils/** → funzioni comuni (hashing, pagination, ecc.).  
-- **Uploads/** → cartella per file caricati (servita come static path).  
+> **Copia & incolla** in PowerShell nella cartella del progetto.
+
+```powershell
+# 1) Cartelle
+$dirs = @(
+  "app","app\Infrastructure","app\Models","app\Schemas","app\Repositories",
+  "app\Services","app\Controllers","app\Router","app\Utils",
+  "db\sql","tests"
+)
+$dirs | ForEach-Object { New-Item -ItemType Directory -Force -Path $_ | Out-Null }
+
+# 2) Package markers (facoltativi ma consigliati)
+$pkgs = @(
+  "app\__init__.py","app\Infrastructure\__init__.py","app\Models\__init__.py",
+  "app\Schemas\__init__.py","app\Repositories\__init__.py","app\Services\__init__.py",
+  "app\Controllers\__init__.py","app\Router\__init__.py","app\Utils\__init__.py"
+)
+$pkgs | ForEach-Object { New-Item -ItemType File -Force -Path $_ | Out-Null }
+
+# 3) File principali (vuoti, li riempirai col codice)
+$files = @(
+  "app\main.py","app\config.py",
+  "app\Infrastructure\db.py","app\Infrastructure\jwks.py","app\Infrastructure\supabase_service.py",
+  "app\Models\auth_user.py","app\Models\role.py","app\Models\user_role.py",
+  "app\Schemas\auth_user.py","app\Schemas\role.py","app\Schemas\user_role.py",
+  "app\Repositories\auth_user_repository.py","app\Repositories\role_repository.py","app\Repositories\user_role_repository.py",
+  "app\Services\user_service.py","app\Services\role_service.py",
+  "app\Controllers\users_controller.py","app\Controllers\roles_controller.py","app\Controllers\user_roles_controller.py",
+  "app\Router\auth.py","app\Router\routes.py",
+  "app\Utils\jwt_verify_supabase.py","app\Utils\pagination.py",
+  "db\sql\001_roles.sql",
+  "tests\conftest.py","tests\test_health.py","tests\test_roles.py","tests\test_users_crud.py",
+  ".env.example","requirements.txt","pytest.ini"
+)
+$files | ForEach-Object { New-Item -ItemType File -Force -Path $_ | Out-Null }
+```
+
+> Dopo aver creato i file, incolla il **codice** che ti ho fornito nei relativi percorsi (o chiedimi di rigenerarli qui).
 
 ---
 
-## 🔄 Flow delle richieste (esempio `/api/v1/users`)
-1. **Router** → definisce che `/users` (POST) va a `UsersController.create_user`, richiede auth ruolo `admin`.  
-2. **Controller** → riceve input validato (schema), chiama `UserService`.  
-3. **Service** → applica logica (es. check email univoca), usa `UserRepository`.  
-4. **Repository** → interroga il DB tramite SQLAlchemy async.  
-5. **Model** → mappa il risultato.  
-6. **Schema** → converte entità in JSON di output.  
+## ⚙️ Variabili d’ambiente (`.env`)
+Crea `.env` (puoi partire da `.env.example`):
 
----
-
-## 🔑 Autenticazione e Ruoli
-- Dipendenza `require_auth(roles=[...])` applicata automaticamente dal Router.  
-- Attualmente demo: header `X-Role` (`admin`, `manager`, `user`).  
-- In produzione → sostituibile con JWT/OAuth2 senza cambiare Controller/Router.  
-
----
-
-## 📂 Uploads
-- Endpoint `/api/v1/files/upload` → salva file in `app/Uploads/`.  
-- Restituisce `{"url": "/uploads/<nomefile>"}`.  
-- FastAPI serve `/uploads/*` come **static files**.  
-- Nel DB salvi solo l’URL, non il file binario.  
-
----
-
-## ⚙️ Configurazione
-### `.env`
 ```env
 APP_NAME=My FastAPI App
 ENV=dev
 
-POSTGRES_USER=appuser
-POSTGRES_PASSWORD=apppass
-POSTGRES_DB=appdb
-POSTGRES_HOST=db
-POSTGRES_PORT=5432
-DATABASE_URL=postgresql+asyncpg://appuser:apppass@db:5432/appdb
+# Supabase Postgres (usa SEMPRE sslmode=require)
+DATABASE_URL=postgresql+asyncpg://USER:PASSWORD@HOST:5432/DBNAME?sslmode=require
 
-DB_POOL_SIZE=20
-DB_MAX_OVERFLOW=20
-DB_POOL_TIMEOUT=30
-DB_POOL_RECYCLE=1800
+# Supabase Auth (JWKS)
+SUPABASE_PROJECT_URL=https://<PROJECT_REF>.supabase.co
+SUPABASE_JWKS_URL=${SUPABASE_PROJECT_URL}/auth/v1/.well-known/jwks.json
+TOKEN_ISSUER=${SUPABASE_PROJECT_URL}/auth/v1
+TOKEN_AUDIENCE=authenticated
 
-UPLOADS_DIR=app/Uploads
-UPLOADS_URL_PREFIX=/uploads
-
-PGADMIN_DEFAULT_EMAIL=admin@example.com
-PGADMIN_DEFAULT_PASSWORD=admin
+# Supabase Admin (service) — usato SOLO per creare/patchare utenti
+SUPABASE_KEY=<SERVICE_ROLE_OR_ANON_KEY>   # per patch admin serve SERVICE ROLE
 ```
 
 ---
 
-## 🐳 Docker Compose
+## 📦 Dipendenze
 
-### File principali
-- `docker-compose.yml` → definizione base (app + db + redis + pgAdmin).  
-- `docker-compose.override.yml` → dev (bind mount, `--reload`, porte aperte per db/redis).  
-- `docker-compose.prod.yml` → prod (gunicorn, niente bind, db/redis interni).  
-- `Dockerfile` → immagine base Python 3.13.  
-- `.env.example` → template delle variabili.
-
-### Healthcheck
-- **app** → `curl http://localhost:8000/`  
-- **db** → `pg_isready -U $POSTGRES_USER`  
-- **redis** → `redis-cli ping`
-
----
-
-## ▶️ Avvio
-
-### Dev (hot reload)
-```powershell
-docker compose up -d --build
-# usa docker-compose.yml + docker-compose.override.yml
+### requirements.txt
+```txt
+fastapi[standard]==0.116.1
+SQLAlchemy[asyncio]==2.0.43
+asyncpg==0.30.0
+pydantic-settings==2.10.1
+python-dotenv==1.1.1
+python-jose[cryptography]==3.3.0
+httpx==0.27.2
+pytest==8.2.2
+pytest-asyncio==0.23.8
+asgi-lifespan==2.1.0
+pytest-cov==5.0.0
 ```
 
-### Prod
+**Setup ambiente**
 ```powershell
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
-```
-
----
-
-## 🧑‍💻 Avvio locale senza Docker
-```powershell
+python -m venv venv
 .\venv\Scripts\Activate.ps1
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+---
+
+## ▶️ Avvio (dev)
+
+```powershell
 uvicorn app.main:app --reload
+# Docs: http://127.0.0.1:8000/docs
+```
+
+**Autorizzazione**  
+Proteggi le rotte admin con `Authorization: Bearer <access_token_supabase>` (ottenuto da Supabase Auth).  
+La dependency `require_roles(["admin"])` verifica il token via JWKS e controlla nel DB l’associazione ruolo.
+
+---
+
+## 🗃️ Modello dati (riassunto)
+
+- `auth.users` (gestita da Supabase) — **non** la creiamo noi.
+- `public.roles`: elenco ruoli app → (id, name, description)
+- `public.user_roles`: ponte utente↔ruolo → (user_id UUID → auth.users.id, role_id → roles.id, UNIQUE)
+
+**DDL iniziale**: `db/sql/001_roles.sql`
+
+---
+
+## 🧩 CRUD Utenti
+
+- `GET    /api/v1/users` — lista
+- `GET    /api/v1/users/{user_id}` — dettaglio
+- `POST   /api/v1/users` — **crea** via `Infrastructure/supabase_service.py` (signup + patch)
+- `PUT    /api/v1/users/{user_id}` — aggiorna campi “safe” (email/phone/ban/meta)
+- `DELETE /api/v1/users/{user_id}` — elimina (consigliato passare da Admin API)
+
+> Tutto **async** (FastAPI + SQLAlchemy + httpx).
+
+---
+
+## 🧪 Test
+
+- `tests/conftest.py` — avvio app in test con lifespan e `httpx.AsyncClient`
+- `tests/test_health.py` — verifica `/`
+- `tests/test_roles.py` — CRUD ruoli (richiede token admin o mocking)
+- `tests/test_users_crud.py` — CRUD utenti (mock del service o ambiente di test Supabase)
+
+Esecuzione:
+```powershell
+pytest -q
+pytest -q --cov=app --cov-report=term-missing
 ```
 
 ---
 
-## ⚡ Best Practices (alto traffico)
-
-- **Workers**: `gunicorn -w N -k uvicorn.workers.UvicornWorker`  
-  - N ≈ n° core CPU (fino a 1.5× se I/O-bound).  
-- **Connection Pool**: `(pool_size × workers) ≤ max_connections PostgreSQL`.  
-- **Cache Redis**: usa per query frequenti, invalidazione su update.  
-- **Migrazioni**: sempre con `alembic revision --autogenerate` + `alembic upgrade head`.  
-- **Logging/Monitoring**: log JSON, Prometheus metrics, OpenTelemetry tracing.  
-- **Sicurezza**: CORS limitato, validazione Pydantic, limiti payload, upload sicuri.  
-- **Task lenti**: spostati su Celery/RQ con Redis (non bloccare request).  
-
----
-
-## 📌 Esempio API
-
-### Creazione utente
-```http
-POST /api/v1/users
-Headers:
-  X-Role: admin
-Body:
-{
-  "email": "alice@example.com",
-  "full_name": "Alice Rossi",
-  "role": "manager"
-}
-```
-
-### Upload file
-```http
-POST /api/v1/files/upload
-Headers:
-  X-Role: user
-Body (multipart/form-data):
-  file=@report.pdf
-```
-Risposta:
-```json
-{"url": "/uploads/20250302123456_report.pdf", "filename": "20250302123456_report.pdf"}
-```
-
----
-
-## 🔮 Estensioni future
-- Sostituire header `X-Role` con **JWT/OAuth2**.  
-- Aggiungere repository per altre entità (es. `Product`, `Order`).  
-- Aggiungere **service layer Redis** per caching avanzata.  
-- Deploy con **Kubernetes** (Compose → Helm chart).  
+## ℹ️ Note
+- **RLS policy**: opzionali ma raccomandate se prevedi accessi diretti da client/Supabase SDK.
+- **Service Admin**: usa la **service role key** SOLO lato backend e SOLO dove serve (creazione/patch utente), non esporla mai al client.
