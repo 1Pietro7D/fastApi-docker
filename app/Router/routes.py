@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from app.Controllers.roles_controller import RolesController
 from app.Controllers.user_roles_controller import UserRolesController
 from app.Controllers.users_controller import UsersController
-from app.Router.auth import require_roles
+# from app.Router.auth import require_roles
 
 roles = RolesController()
 user_roles = UserRolesController()
