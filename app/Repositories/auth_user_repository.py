@@ -1,10 +1,11 @@
 # app/Repositories/auth_user_repository.py
+
 from __future__ import annotations
 
 from typing import Optional, Sequence
 from uuid import UUID
 
-from sqlalchemy import select, update, delete
+from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.Models.auth_user import AuthUser
@@ -44,30 +45,22 @@ class AuthUserRepository:
         return res.scalars().first()
 
     # -------------------------
-    # WRITE
+    # WRITE (pattern ORM robusto)
     # -------------------------
     async def update(self, user_id: UUID, data: dict) -> Optional[AuthUser]:
         """
         Aggiorna i campi dell'utente con id dato e ritorna la riga aggiornata.
         ATTENZIONE: valuta l'uso del service Supabase Admin per i campi gestiti da Auth.
         """
-        if not data:
-            # niente da aggiornare
-            return await self.get(user_id)
-
-        stmt = (
-            update(AuthUser)
-            .where(AuthUser.id == user_id)
-            .values(**data)
-            .returning(AuthUser)
-        )
-        res = await self.db.execute(stmt)
-        row = res.scalar_one_or_none()
-        if row:
+        obj = await self.db.get(AuthUser, user_id)
+        if not obj:
+            return None
+        if data:
+            for k, v in data.items():
+                setattr(obj, k, v)
             await self.db.commit()
-        else:
-            await self.db.rollback()
-        return row
+            await self.db.refresh(obj)
+        return obj
 
     async def delete(self, user_id: UUID) -> bool:
         """

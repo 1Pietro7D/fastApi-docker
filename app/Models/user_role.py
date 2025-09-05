@@ -1,4 +1,5 @@
 # app/Models/user_role.py
+
 from __future__ import annotations
 import uuid
 from sqlalchemy.orm import Mapped, mapped_column

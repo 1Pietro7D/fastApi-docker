@@ -1,16 +1,23 @@
+# app/Models/auth_user.py
+
 from __future__ import annotations
+
+import uuid
+from typing import Any
+
 from sqlalchemy import String, Boolean, SmallInteger, Text, TIMESTAMP
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import Mapped, mapped_column
+
 from app.Infrastructure.db import Base
-from typing import Any
+
 
 class AuthUser(Base):
     __tablename__ = "users"
     __table_args__ = {"schema": "auth"}
 
-    instance_id: Mapped[str | None] = mapped_column(UUID(as_uuid=True), nullable=True)
-    id: Mapped[str] = mapped_column(UUID(as_uuid=True), primary_key=True)
+    instance_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True)
     aud: Mapped[str | None] = mapped_column(String(255))
     role: Mapped[str | None] = mapped_column(String(255))
     email: Mapped[str | None] = mapped_column(String(255))

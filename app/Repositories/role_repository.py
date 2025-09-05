@@ -1,8 +1,9 @@
 # app/Repositories/role_repository.py
+
 from typing import Sequence, Optional
 from uuid import UUID
 
-from sqlalchemy import select, update, delete, insert
+from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.Models.role import Role
@@ -35,39 +36,32 @@ class RoleRepository:
         return await self.db.get(Role, role_id)
 
     # -------------------------
-    # WRITE
+    # WRITE (pattern ORM robusto)
     # -------------------------
     async def create(self, data: dict) -> Role:
         """
         Crea un nuovo ruolo con i dati forniti e ritorna il record appena creato.
         """
-        stmt = insert(Role).values(**data).returning(Role)
-        res = await self.db.execute(stmt)
-        row = res.scalar_one()
+        obj = Role(**data)
+        self.db.add(obj)
         await self.db.commit()
-        return row
+        await self.db.refresh(obj)
+        return obj
 
     async def update(self, role_id: UUID, data: dict) -> Optional[Role]:
         """
         Aggiorna i campi del ruolo specificato.
         Ritorna il ruolo aggiornato, oppure None se non trovato.
         """
-        if not data:
-            return await self.get(role_id)
-
-        stmt = (
-            update(Role)
-            .where(Role.id == role_id)
-            .values(**data)
-            .returning(Role)
-        )
-        res = await self.db.execute(stmt)
-        row = res.scalar_one_or_none()
-        if row:
+        obj = await self.db.get(Role, role_id)
+        if not obj:
+            return None
+        if data:
+            for k, v in data.items():
+                setattr(obj, k, v)
             await self.db.commit()
-        else:
-            await self.db.rollback()
-        return row
+            await self.db.refresh(obj)
+        return obj
 
     async def delete(self, role_id: UUID) -> bool:
         """

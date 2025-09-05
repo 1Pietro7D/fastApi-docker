@@ -1,3 +1,5 @@
+# app/Infrastructure/supabase_service.py
+
 from __future__ import annotations
 import httpx
 from typing import Any, Dict, Optional
@@ -23,7 +25,12 @@ async def _request(method: str, path: str, json: Optional[dict] = None) -> Dict[
     timeout = httpx.Timeout(30.0, connect=8.0)
     async with httpx.AsyncClient(timeout=timeout) as client:
         resp = await client.request(method, url, headers=_headers(), json=json)
-    data = resp.json() if resp.content else {}
+    # parsing JSON resiliente
+    data: Dict[str, Any]
+    try:
+        data = resp.json() if resp.content else {}
+    except Exception:
+        data = {"message": "Invalid JSON response from Supabase"}
     if resp.status_code >= 400:
         return {
             "error": "auth",
@@ -53,9 +60,12 @@ async def register_user(email: str, password: str, user_meta: Optional[dict] = N
     if not user_id:
         return res
     patch: dict = {}
-    if app_meta: patch["app_metadata"] = app_meta
-    if banned_until is not None: patch["banned_until"] = banned_until
-    if phone is not None: patch["phone"] = phone
+    if app_meta is not None:
+        patch["app_metadata"] = app_meta
+    if banned_until is not None:
+        patch["banned_until"] = banned_until
+    if phone is not None:
+        patch["phone"] = phone
     if patch:
         upd = await update_user(user_id, patch)
         if not upd.get("error") and isinstance(upd.get("user"), dict):
