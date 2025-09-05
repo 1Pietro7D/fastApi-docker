@@ -4,6 +4,7 @@ from app.Infrastructure.db import get_db
 from app.Services.user_service import UserService
 from app.Schemas.auth_user import AuthUserCreate, AuthUserUpdate, AuthUserRead
 from app.Router.auth import require_roles
+from uuid import UUID
 
 class UsersController:
     def __init__(self): ...
@@ -21,7 +22,7 @@ class UsersController:
 
     async def get_user(
         self,
-        user_id: str,
+        user_id: UUID,
         db: AsyncSession = Depends(get_db),
         _claims: dict = Depends(require_roles(["admin"]))  # <<<< QUI
     ) -> AuthUserRead:
@@ -45,7 +46,7 @@ class UsersController:
 
     async def update_user(
         self,
-        user_id: str,
+        user_id: UUID,
         payload: AuthUserUpdate,
         db: AsyncSession = Depends(get_db),
         _claims: dict = Depends(require_roles(["admin"]))  # <<<< QUI
@@ -58,7 +59,7 @@ class UsersController:
 
     async def delete_user(
         self,
-        user_id: str,
+        user_id: UUID,
         db: AsyncSession = Depends(get_db),
         _claims: dict = Depends(require_roles(["admin"]))  # <<<< QUI
     ) -> dict:

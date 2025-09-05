@@ -4,7 +4,7 @@ from app.Infrastructure.db import get_db
 from app.Services.role_service import RoleService
 from app.Schemas.role import RoleCreate, RoleUpdate, RoleRead
 from app.Router.auth import require_roles
-
+from uuid import UUID
 class RolesController:
     def __init__(self): ...
 
@@ -14,7 +14,7 @@ class RolesController:
         rows = await svc.roles.list()
         return [RoleRead.model_validate(r) for r in rows]
 
-    async def get_role(self, role_id: int, db: AsyncSession = Depends(get_db)) -> RoleRead:
+    async def get_role(self, role_id: UUID, db: AsyncSession = Depends(get_db)) -> RoleRead:
         await require_roles(["admin"])()
         svc = RoleService(db)
         row = await svc.roles.get(role_id)
@@ -28,7 +28,7 @@ class RolesController:
         row = await svc.roles.create(payload.model_dump())
         return RoleRead.model_validate(row)
 
-    async def update_role(self, role_id: int, payload: RoleUpdate, db: AsyncSession = Depends(get_db)) -> RoleRead:
+    async def update_role(self, role_id: UUID, payload: RoleUpdate, db: AsyncSession = Depends(get_db)) -> RoleRead:
         await require_roles(["admin"])()
         svc = RoleService(db)
         row = await svc.roles.update(role_id, payload.model_dump(exclude_none=True))
@@ -36,7 +36,7 @@ class RolesController:
             raise HTTPException(status_code=404, detail="Ruolo non trovato")
         return RoleRead.model_validate(row)
 
-    async def delete_role(self, role_id: int, db: AsyncSession = Depends(get_db)) -> dict:
+    async def delete_role(self, role_id: UUID, db: AsyncSession = Depends(get_db)) -> dict:
         await require_roles(["admin"])()
         svc = RoleService(db)
         ok = await svc.roles.delete(role_id)
