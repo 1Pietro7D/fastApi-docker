@@ -7,17 +7,25 @@ from pydantic import Field
 
 
 class Settings(BaseSettings):
-    # Accetta campi extra nel .env e usa .env di default
+    """
+    Configurazione centralizzata dell'app.
+    - Usa SOLO la Service Key (SUPABASE_KEY) per tutte le chiamate (signup, login, admin).
+    """
+
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
-    DB_SSL_VERIFY: bool = True  # True=verifica CA (consigliato), False=disabilita verifica (solo dev)
 
+    # Ambiente / App
     APP_NAME: str = "My FastAPI App"
-    ENV: str = "dev"
+    ENV: str = "dev"  # dev | prod
 
-    # Opzione 1: URL completo già pronto
-    DATABASE_URL: Optional[str] = Field(default=None, description="postgresql+asyncpg://user:pass@host:5432/db?sslmode=require")
+    # SSL DB
+    DB_SSL_VERIFY: bool = True
 
-    # Opzione 2: componenti singoli (se non fornisci DATABASE_URL)
+    # Connessione DB
+    DATABASE_URL: Optional[str] = Field(
+        default=None,
+        description="postgresql+asyncpg://user:pass@host:5432/db?sslmode=require",
+    )
     DB_HOST: Optional[str] = None
     DB_NAME: Optional[str] = None
     DB_USER: Optional[str] = None
@@ -25,14 +33,16 @@ class Settings(BaseSettings):
     DB_PORT: Optional[int] = 5432
     DB_CHARSET: Optional[str] = "utf8"
 
-    # Supabase Auth (JWKS)
+    # Supabase Auth
     SUPABASE_PROJECT_URL: str
     SUPABASE_JWKS_URL: str
     TOKEN_ISSUER: str
     TOKEN_AUDIENCE: str
 
-    # Supabase Admin key (service/anon)
+    # Solo service key
     SUPABASE_KEY: str
+
+    AUTH_AUTO_CONFIRM_DEV: bool = True
 
     def assemble_db_url(self) -> str:
         if self.DATABASE_URL:
@@ -45,5 +55,4 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-# Normalizza: garantiamo che DATABASE_URL sia sempre valorizzato
 settings.DATABASE_URL = settings.assemble_db_url()

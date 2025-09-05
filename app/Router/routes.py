@@ -2,26 +2,56 @@
 
 from fastapi import APIRouter, Depends
 
-# Auth dependency per proteggere gruppi di rotte
-from app.Router.auth import require_roles
+# 🔒 Dipendenze per proteggere route con ruoli / autenticazione
+from app.Router.auth import require_roles, get_current_claims
 
-# Controller
+# 📦 Controller applicativi
 from app.Controllers.users_controller import UsersController
 from app.Controllers.roles_controller import RolesController
 from app.Controllers.user_roles_controller import UserRolesController
+from app.Controllers.auth_controller import AuthController
 
-# Schemi per response_model
+# 📦 Schemi per le response (tipi Pydantic)
 from app.Schemas.auth_user import AuthUserRead
 from app.Schemas.role import RoleRead
-from app.Schemas.user_role import UserRoleRead
+from app.Schemas.auth_session import (
+    LoginResponse,
+    RegisterResponse,
+    LogoutResponse,
+)
 
 # Istanze controller (stateless)
 users = UsersController()
 roles = RolesController()
 user_roles = UserRolesController()
+auth = AuthController()
 
-# Router aggregatore
+# Router aggregatore principale
 router = APIRouter()
+
+# ───────────────────────────────
+# 🔐 AUTH (pubblico per login/register; autenticato per logout)
+# ───────────────────────────────
+router_auth = APIRouter(
+    prefix="/api/v1/auth",
+    tags=["Auth"],
+)
+
+# LOGIN: password grant verso Supabase (in questa codebase → sempre service key)
+router_auth.post("/login", response_model=LoginResponse)(auth.login)
+
+# REGISTER: crea utente; in dev può auto-confermare email
+router_auth.post("/register", response_model=RegisterResponse)(auth.register)
+
+# LOGOUT: revoca refresh token dell'utente corrente (serve solo essere autenticati)
+router_auth.post(
+    "/logout",
+    response_model=LogoutResponse,
+    dependencies=[Depends(get_current_claims)],
+)(auth.logout)
+
+# monta il blocco auth nel router principale
+router.include_router(router_auth)
 
 # ───────────────────────────────
 # 👥 USERS (protetto: admin)
@@ -29,7 +59,7 @@ router = APIRouter()
 router_users = APIRouter(
     prefix="/api/v1/users",
     tags=["Users"],
-    dependencies=[Depends(require_roles(["admin"]))],  # protezione a livello di gruppo
+    dependencies=[Depends(require_roles(["admin"]))],  # protezione group-level
 )
 
 router_users.get("/", response_model=list[AuthUserRead])(users.list_users)
@@ -66,20 +96,22 @@ router_user_roles = APIRouter(
     dependencies=[Depends(require_roles(["admin"]))],
 )
 
-# Ora questa rotta ritorna direttamente i RUOLI dell'utente (non il ponte)
+# Ritorna direttamente i RUOLI (RoleRead) assegnati all'utente
 router_user_roles.get(
     "/users/{user_id}/roles",
     response_model=list[RoleRead],
 )(user_roles.list_user_roles)
 
-# ⬇️ CORRETTO: il controller ritorna RoleRead, quindi adeguiamo la response
+# Assegna un ruolo a un utente, e restituisce il ruolo assegnato
 router_user_roles.post(
     "/users/assign-role",
     response_model=RoleRead,
 )(user_roles.assign_role)
 
+# Rimuove un ruolo da un utente
 router_user_roles.delete(
     "/users/{user_id}/roles/{role_id}",
 )(user_roles.unassign_role)
 
+# monta il blocco user-roles nel router principale
 router.include_router(router_user_roles)
