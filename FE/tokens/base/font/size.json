@@ -1,0 +1,58 @@
+{
+  "base": {
+    "font": {
+      "size": {
+        "xxs": {
+          "$value": "0.625rem",
+          "$type": "fontSize",
+          "$comment": "10px. Per testo estremamente piccolo, usato raramente."
+        },
+        "xs": {
+          "$value": "0.75rem",
+          "$type": "fontSize",
+          "$comment": "12px. Per testo molto piccolo come disclaimer o metadati."
+        },
+        "sm": {
+          "$value": "0.875rem",
+          "$type": "fontSize",
+          "$comment": "14px. Per etichette, input, e testo di supporto."
+        },
+        "base": {
+          "$value": "1rem",
+          "$type": "fontSize",
+          "$comment": "16px. Dimensione di base per tutto il corpo del testo (paragrafi)."
+        },
+        "lg": {
+          "$value": "1.125rem",
+          "$type": "fontSize",
+          "$comment": "18px. Per titoli di sezione secondari o testo enfatizzato."
+        },
+        "xl": {
+          "$value": "1.25rem",
+          "$type": "fontSize",
+          "$comment": "20px. Per titoli di card o widget."
+        },
+        "2xl": {
+          "$value": "1.5rem",
+          "$type": "fontSize",
+          "$comment": "24px. Per titoli di pagina principali."
+        },
+        "3xl": {
+          "$value": "1.875rem",
+          "$type": "fontSize",
+          "$comment": "30px. Per numeri e statistiche importanti."
+        },
+        "4xl": {
+          "$value": "2.25rem",
+          "$type": "fontSize",
+          "$comment": "36px. Per metriche chiave nella dashboard (es. P&L Totale)."
+        },
+        "5xl": {
+          "$value": "3rem",
+          "$type": "fontSize",
+          "$comment": "48px. Per statistiche 'hero' a impatto massimo."
+        }
+      }
+    }
+  }
+}

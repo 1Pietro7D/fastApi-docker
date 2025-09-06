@@ -1,0 +1,22 @@
+/* src/assets/main.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  /* Applichiamo lo stile di base del corpo del testo a tutto il body */
+  font: var(--semantic-font-style-body-base);
+  color: var(--semantic-color-text-primary);
+  background-color: var(--semantic-color-surface-page);
+}
+
+/*
+ * Stile per il blocco dello scroll (Scroll Trapping).
+ * Quando un modale è aperto, la classe `modal-open` viene aggiunta al body
+ * per impedire lo scroll della pagina sottostante.
+ */
+body.modal-open {
+  overflow: hidden;
+}

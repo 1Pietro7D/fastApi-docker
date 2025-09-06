@@ -1,0 +1,33 @@
+{
+  "base": {
+    "layout": {
+      "breakpoint": {
+        "sm": {
+          "$value": "640px",
+          "$type": "dimension",
+          "$comment": "Breakpoint per dispositivi mobili di grandi dimensioni e tablet in verticale."
+        },
+        "md": {
+          "$value": "768px",
+          "$type": "dimension",
+          "$comment": "Breakpoint per tablet e laptop di piccole dimensioni."
+        },
+        "lg": {
+          "$value": "1024px",
+          "$type": "dimension",
+          "$comment": "Breakpoint per laptop e desktop di dimensioni standard."
+        },
+        "xl": {
+          "$value": "1280px",
+          "$type": "dimension",
+          "$comment": "Breakpoint per monitor desktop di grandi dimensioni."
+        },
+        "2xl": {
+          "$value": "1536px",
+          "$type": "dimension",
+          "$comment": "Breakpoint per monitor ad altissima risoluzione."
+        }
+      }
+    }
+  }
+}

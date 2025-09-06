@@ -1,0 +1,28 @@
+{
+  "base": {
+    "animation": {
+      "easing": {
+        "linear": {
+          "$value": "cubic-bezier(0, 0, 1, 1)",
+          "$type": "cubicBezier",
+          "$comment": "Animazione a velocità costante. Usare raramente, per movimenti meccanici come una rotazione."
+        },
+        "in": {
+          "$value": "cubic-bezier(0.4, 0, 1, 1)",
+          "$type": "cubicBezier",
+          "$comment": "Inizia lentamente e accelera. Ideale per elementi che escono dalla vista (si 'ritirano')."
+        },
+        "out": {
+          "$value": "cubic-bezier(0, 0, 0.2, 1)",
+          "$type": "cubicBezier",
+          "$comment": "La curva più comune per elementi che entrano nella vista."
+        },
+        "in-out": {
+          "$value": "cubic-bezier(0.4, 0, 0.2, 1)",
+          "$type": "cubicBezier",
+          "$comment": "Inizia e finisce lentamente. Per animazioni che modificano un elemento sul posto."
+        }
+      }
+    }
+  }
+}

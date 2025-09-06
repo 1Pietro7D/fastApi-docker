@@ -1,0 +1,66 @@
+{
+  "base": {
+    "color": {
+      "black": {
+        "$value": "#000000",
+        "$type": "color"
+      },
+      "black-alpha-50": {
+        "$value": "rgba(0, 0, 0, 0.5)",
+        "$type": "color",
+        "$comment": "Nero con opacità al 50%, utile per sfondi di overlay."
+      },
+      "white": {
+        "$value": "#ffffff",
+        "$type": "color"
+      },
+      "gray": {
+        "50":  { "$value": "#f4f4f5", "$type": "color" },
+        "100": { "$value": "#e9e9ea", "$type": "color" },
+        "200": { "$value": "#d8d8d9", "$type": "color" },
+        "300": { "$value": "#b5b5b7", "$type": "color" },
+        "400": { "$value": "#909093", "$type": "color" },
+        "500": { "$value": "#78787c", "$type": "color" },
+        "600": { "$value": "#5d5d61", "$type": "color" },
+        "700": { "$value": "#45454a", "$type": "color" },
+        "800": { "$value": "#2e2e33", "$type": "color" },
+        "900": { "$value": "#1c1c21", "$type": "color" },
+        "950": { "$value": "#131316", "$type": "color" }
+      },
+      "blue": {
+        "400": { "$value": "#60a5fa", "$type": "color" },
+        "500": { "$value": "#3b82f6", "$type": "color" },
+        "600": { "$value": "#2563eb", "$type": "color" },
+        "700": { "$value": "#1d4ed8", "$type": "color" }
+      },
+      "green": {
+        "400": { "$value": "#4ade80", "$type": "color" },
+        "500": { "$value": "#22c55e", "$type": "color" },
+        "600": {
+          "$value": "#16a34a",
+          "$type": "color",
+          "$comment": "Colore esadecimale per il verde di feedback positivo."
+        },
+        "600-rgb": {
+          "$value": "22, 163, 74",
+          "$type": "color",
+          "$comment": "Valore RGB puro per il verde di feedback. Utile per funzioni JS come rgba()."
+        }
+      },
+      "red": {
+        "400": { "$value": "#f87171", "$type": "color" },
+        "500": { "$value": "#ef4444", "$type": "color" },
+        "600": {
+          "$value": "#dc2626",
+          "$type": "color",
+          "$comment": "Colore esadecimale per il rosso di feedback negativo."
+        },
+        "600-rgb": {
+          "$value": "220, 38, 38",
+          "$type": "color",
+          "$comment": "Valore RGB puro per il rosso di feedback. Utile per funzioni JS come rgba()."
+        }
+      }
+    }
+  }
+}

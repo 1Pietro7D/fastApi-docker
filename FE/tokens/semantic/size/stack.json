@@ -1,0 +1,38 @@
+{
+  "semantic": {
+    "size": {
+      "stack": {
+        "xxs": {
+          "$value": "{base.size.spacing.1}",
+          "$type": "spacing",
+          "$comment": "4px. Spazio minimo assoluto, per elementi compatti come i badge."
+        },
+        "xs": {
+          "$value": "{base.size.spacing.2}",
+          "$type": "spacing",
+          "$comment": "8px. Spazio minimo tra elementi strettamente correlati."
+        },
+        "sm": {
+          "$value": "{base.size.spacing.4}",
+          "$type": "spacing",
+          "$comment": "16px. Spazio standard tra elementi impilati in un contenitore (es. titolo e paragrafo)."
+        },
+        "md": {
+          "$value": "{base.size.spacing.6}",
+          "$type": "spacing",
+          "$comment": "24px. Spazio tra componenti distinti ma correlati (es. due card)."
+        },
+        "lg": {
+          "$value": "{base.size.spacing.8}",
+          "$type": "spacing",
+          "$comment": "32px. Spazio tra sezioni principali del layout."
+        },
+        "xl": {
+          "$value": "{base.size.spacing.12}",
+          "$type": "spacing",
+          "$comment": "48px. Spazio ampio per separare gruppi di contenuti non correlati."
+        }
+      }
+    }
+  }
+}

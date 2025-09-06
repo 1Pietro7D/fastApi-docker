@@ -1,0 +1,41 @@
+{
+  "semantic": {
+    "size": {
+      "calendar": {
+        "card": {
+          "padding-inline": {
+            "desktop": { "$value": "{semantic.size.inset.lg}", "$type": "dimension" },
+            "tablet": { "$value": "{semantic.size.inset.md}", "$type": "dimension" },
+            "mobile": { "$value": "{semantic.size.inset.sm}", "$type": "dimension" }
+          },
+          "padding-block": {
+            "desktop": { "$value": "{semantic.size.inset.md}", "$type": "dimension" },
+            "tablet": { "$value": "{semantic.size.inset.sm}", "$type": "dimension" },
+            "mobile": { "$value": "{semantic.size.inset.xs}", "$type": "dimension" }
+          }
+        },
+        "grid": {
+          "gap": {
+            "desktop": { "$value": "{base.size.spacing.1.5}", "$type": "dimension" },
+            "tablet": { "$value": "{base.size.spacing.1}", "$type": "dimension" },
+            "mobile": { "$value": "{base.size.spacing.1}", "$type": "dimension" }
+          }
+        },
+        "day-cell": {
+          "padding": {
+            "desktop": { "$value": "{base.size.spacing.1}", "$type": "dimension" },
+            "tablet": { "$value": "{base.size.spacing.1}", "$type": "dimension" },
+            "mobile": { "$value": "{base.size.spacing.0.5}", "$type": "dimension" }
+          }
+        },
+        "controls": {
+            "gap": {
+                "desktop": { "$value": "{semantic.size.stack.sm}", "$type": "dimension" },
+                "tablet": { "$value": "{semantic.size.stack.xs}", "$type": "dimension" },
+                "mobile": { "$value": "{semantic.size.stack.xxs}", "$type": "dimension" }
+            }
+        }
+      }
+    }
+  }
+}

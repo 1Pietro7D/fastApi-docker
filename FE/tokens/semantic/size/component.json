@@ -1,0 +1,77 @@
+{
+  "semantic": {
+    "size": {
+      "component": {
+        "button": {
+          "min-height": {
+            "sm": { "$value": "{base.size.spacing.8}", "$type": "dimension" },
+            "md": { "$value": "{base.size.spacing.10}", "$type": "dimension" },
+            "lg": { "$value": "{base.size.spacing.12}", "$type": "dimension" }
+          }
+        },
+        "input": {
+          "height": {
+            "sm": { "$value": "{base.size.spacing.8}", "$type": "dimension" },
+            "md": { "$value": "{base.size.spacing.10}", "$type": "dimension" },
+            "lg": { "$value": "{base.size.spacing.12}", "$type": "dimension" }
+          }
+        },
+        "avatar": {
+          "sm": { "$value": "{base.size.spacing.6}", "$type": "dimension" },
+          "md": { "$value": "{base.size.spacing.8}", "$type": "dimension" },
+          "lg": { "$value": "{base.size.spacing.10}", "$type": "dimension" }
+        },
+        "sidebar": {
+          "width": {
+            "expanded": { "$value": "{base.size.spacing.64}", "$type": "dimension" },
+            "collapsed": { "$value": "{base.size.spacing.20}", "$type": "dimension" }
+          }
+        },
+        "stat-card": {
+          "min-width": {
+            "$value": "200px",
+            "$type": "dimension"
+          },
+          "chart": {
+            "width": {
+              "desktop": { "$value": "60px", "$type": "dimension" },
+              "tablet": { "$value": "48px", "$type": "dimension" },
+              "mobile": { "$value": "40px", "$type": "dimension" }
+            }
+          }
+        },
+        "modal": {
+            "max-width": {
+                "desktop": { "$value": "850px", "$type": "dimension" },
+                "tablet": { "$value": "700px", "$type": "dimension" },
+                "mobile": { "$value": "95vw", "$type": "dimension" }
+            },
+            "padding": {
+                "desktop": { "$value": "{semantic.size.inset.xl}", "$type": "dimension" },
+                "tablet": { "$value": "{semantic.size.inset.lg}", "$type": "dimension" },
+                "mobile": { "$value": "{semantic.size.inset.md}", "$type": "dimension" }
+            },
+            "gap": {
+                "desktop": { "$value": "{semantic.size.stack.md}", "$type": "dimension" },
+                "tablet": { "$value": "{semantic.size.stack.sm}", "$type": "dimension" },
+                "mobile": { "$value": "{semantic.size.stack.xs}", "$type": "dimension" }
+            }
+        },
+        "icon-button": {
+            "size": {
+              "medium": {
+                "desktop": { "$value": "{base.size.spacing.10}", "$type": "dimension" },
+                "tablet": { "$value": "{base.size.spacing.8}", "$type": "dimension" },
+                "mobile": { "$value": "{base.size.spacing.8}", "$type": "dimension" }
+              },
+              "small": {
+                "desktop": { "$value": "{base.size.spacing.8}", "$type": "dimension" },
+                "tablet": { "$value": "{base.size.spacing.7}", "$type": "dimension" },
+                "mobile": { "$value": "{base.size.spacing.6}", "$type": "dimension" }
+              }
+            }
+        }
+      }
+    }
+  }
+}

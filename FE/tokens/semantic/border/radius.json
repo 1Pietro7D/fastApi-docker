@@ -1,0 +1,23 @@
+{
+  "semantic": {
+    "border": {
+      "radius": {
+        "interactive": {
+          "$value": "{base.border.radius.md}",
+          "$type": "borderRadius",
+          "$comment": "Radius standard per tutti i componenti interattivi come bottoni e input."
+        },
+        "surface": {
+          "$value": "{base.border.radius.md}",
+          "$type": "borderRadius",
+          "$comment": "Radius per i contenitori principali come card, widget e modali."
+        },
+        "tag": {
+          "$value": "{base.border.radius.full}",
+          "$type": "borderRadius",
+          "$comment": "Radius per elementi piccoli a forma di 'pillola' come tag o badge."
+        }
+      }
+    }
+  }
+}

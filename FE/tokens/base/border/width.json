@@ -1,0 +1,18 @@
+{
+  "base": {
+    "border": {
+      "width": {
+        "1": {
+          "$value": "1px",
+          "$type": "borderWidth",
+          "$comment": "Spessore standard per bordi di input, card e divisori."
+        },
+        "2": {
+          "$value": "2px",
+          "$type": "borderWidth",
+          "$comment": "Spessore maggiore per enfasi, come l'outline di un elemento in focus."
+        }
+      }
+    }
+  }
+}

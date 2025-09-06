@@ -1,0 +1,76 @@
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+:root {
+  --semantic-color-feedback-positive-surface: rgba(22, 163, 74, 0.1);
+  --semantic-color-feedback-negative-surface: rgba(220, 38, 38, 0.1);
+  --semantic-size-component-stat-card-min-width: 200px;
+  --semantic-size-component-stat-card-chart-width-desktop: 60px;
+  --semantic-size-component-stat-card-chart-width-tablet: 48px;
+  --semantic-size-component-stat-card-chart-width-mobile: 40px;
+  --semantic-border-radius-interactive: var(--base-border-radius-md);
+  --semantic-border-radius-surface: var(--base-border-radius-md);
+  --semantic-border-radius-tag: var(--base-border-radius-full);
+  --semantic-color-surface-page: var(--base-color-gray-50);
+  --semantic-color-surface-primary: var(--base-color-white);
+  --semantic-color-surface-secondary: var(--base-color-gray-100);
+  --semantic-color-surface-disabled: var(--base-color-gray-100);
+  --semantic-color-text-primary: var(--base-color-gray-900);
+  --semantic-color-text-secondary: var(--base-color-gray-600);
+  --semantic-color-text-tertiary: var(--base-color-gray-400);
+  --semantic-color-text-disabled: var(--base-color-gray-400);
+  --semantic-color-text-on-brand: var(--base-color-white);
+  --semantic-color-text-interactive: var(--base-color-blue-600);
+  --semantic-color-interactive-primary-default: var(--base-color-blue-600);
+  --semantic-color-interactive-primary-hover: var(--base-color-blue-500);
+  --semantic-color-interactive-secondary-default: var(--base-color-gray-100);
+  --semantic-color-interactive-secondary-hover: var(--base-color-gray-200);
+  --semantic-color-feedback-positive-text: var(--base-color-green-600);
+  --semantic-color-feedback-positive-background-rgb: var(--base-color-green-600-rgb);
+  --semantic-color-feedback-negative-text: var(--base-color-red-600);
+  --semantic-color-feedback-negative-background-rgb: var(--base-color-red-600-rgb);
+  --semantic-color-border-default: var(--base-color-gray-200);
+  --semantic-color-border-subtle: var(--base-color-gray-100);
+  --semantic-color-border-focus: var(--base-color-blue-500);
+  --semantic-color-overlay-background: var(--base-color-black-alpha-50);
+  --semantic-effect-shadow-elevation-low: var(--base-effect-shadow-md);
+  --semantic-effect-shadow-elevation-medium: var(--base-effect-shadow-lg);
+  --semantic-effect-shadow-elevation-high: var(--base-effect-shadow-lg);
+  --semantic-effect-shadow-focus-ring: var(--base-effect-shadow-focus-ring);
+  --semantic-font-style-heading-4xl: var(--base-font-weight-bold) var(--base-font-size-4xl)/var(--base-font-line-height-tight) var(--base-font-family-palette-sans);
+  --semantic-font-style-heading-2xl: var(--base-font-weight-bold) var(--base-font-size-2xl)/var(--base-font-line-height-tight) var(--base-font-family-palette-sans);
+  --semantic-font-style-heading-xl: var(--base-font-weight-semibold) var(--base-font-size-xl)/var(--base-font-line-height-normal) var(--base-font-family-palette-sans);
+  --semantic-font-style-body-base: var(--base-font-weight-regular) var(--base-font-size-base)/var(--base-font-line-height-loose) var(--base-font-family-palette-sans);
+  --semantic-font-style-body-sm: var(--base-font-weight-regular) var(--base-font-size-sm)/var(--base-font-line-height-normal) var(--base-font-family-palette-sans);
+  --semantic-font-style-body-xs: var(--base-font-weight-regular) var(--base-font-size-xs)/var(--base-font-line-height-normal) var(--base-font-family-palette-sans);
+  --semantic-font-style-label-md: var(--base-font-weight-medium) var(--base-font-size-sm)/var(--base-font-line-height-normal) var(--base-font-family-palette-sans);
+  --semantic-font-style-label-sm: var(--base-font-weight-medium) var(--base-font-size-xs)/var(--base-font-line-height-normal) var(--base-font-family-palette-sans);
+  --semantic-font-style-label-xs: var(--base-font-weight-medium) var(--base-font-size-xs)/var(--base-font-line-height-normal) var(--base-font-family-palette-sans);
+  --semantic-font-style-body-xxs: var(--base-font-weight-regular) var(--base-font-size-xxs)/var(--base-font-line-height-normal) var(--base-font-family-palette-sans);
+  --semantic-font-style-data-numeric: var(--base-font-weight-regular) var(--base-font-size-sm)/var(--base-font-line-height-normal) var(--base-font-family-palette-monospace);
+  --semantic-font-style-metric-display: var(--base-font-weight-bold) clamp(var(--base-font-fluid-size-stat-display-min), var(--base-font-fluid-size-stat-display-ideal), var(--base-font-fluid-size-stat-display-max))/var(--base-font-line-height-tight) var(--base-font-family-palette-sans);
+  --semantic-font-style-label-xxs: var(--base-font-weight-medium) var(--base-font-size-xxs)/var(--base-font-line-height-tight) var(--base-font-family-palette-sans);
+  --semantic-size-component-button-min-height-sm: var(--base-size-spacing-8);
+  --semantic-size-component-button-min-height-md: var(--base-size-spacing-10);
+  --semantic-size-component-button-min-height-lg: var(--base-size-spacing-12);
+  --semantic-size-component-input-height-sm: var(--base-size-spacing-8);
+  --semantic-size-component-input-height-md: var(--base-size-spacing-10);
+  --semantic-size-component-input-height-lg: var(--base-size-spacing-12);
+  --semantic-size-component-avatar-sm: var(--base-size-spacing-6);
+  --semantic-size-component-avatar-md: var(--base-size-spacing-8);
+  --semantic-size-component-avatar-lg: var(--base-size-spacing-10);
+  --semantic-size-component-sidebar-width-expanded: var(--base-size-spacing-64);
+  --semantic-size-component-sidebar-width-collapsed: var(--base-size-spacing-20);
+  --semantic-size-inset-xs: var(--base-size-spacing-2);
+  --semantic-size-inset-sm: var(--base-size-spacing-3);
+  --semantic-size-inset-md: var(--base-size-spacing-4);
+  --semantic-size-inset-lg: var(--base-size-spacing-6);
+  --semantic-size-inset-xl: var(--base-size-spacing-8);
+  --semantic-size-stack-xxs: var(--base-size-spacing-1);
+  --semantic-size-stack-xs: var(--base-size-spacing-2);
+  --semantic-size-stack-sm: var(--base-size-spacing-4);
+  --semantic-size-stack-md: var(--base-size-spacing-6);
+  --semantic-size-stack-lg: var(--base-size-spacing-8);
+  --semantic-size-stack-xl: var(--base-size-spacing-12);
+}

@@ -1,0 +1,183 @@
+{
+  "semantic": {
+    "font": {
+      "style": {
+        "heading-4xl": {
+          "$value": {
+            "fontFamily": "{base.font.family.palette.sans}",
+            "fontWeight": "{base.font.weight.bold}",
+            "fontSize": "{base.font.size.4xl}",
+            "lineHeight": "{base.font.line-height.tight}"
+          },
+          "$type": "typography",
+          "$comment": "Stile per metriche 'hero' ad alto impatto nelle dashboard."
+        },
+        "heading-2xl": {
+          "$value": {
+            "fontFamily": "{base.font.family.palette.sans}",
+            "fontWeight": "{base.font.weight.bold}",
+            "fontSize": "{base.font.size.2xl}",
+            "lineHeight": "{base.font.line-height.tight}"
+          },
+          "$type": "typography",
+          "$comment": "Stile per i titoli di pagina principali."
+        },
+        "heading-xl": {
+          "$value": {
+            "fontFamily": "{base.font.family.palette.sans}",
+            "fontWeight": "{base.font.weight.semibold}",
+            "fontSize": "clamp({base.font.fluid-size.fluid-heading-xl.min}, {base.font.fluid-size.fluid-heading-xl.ideal}, {base.font.fluid-size.fluid-heading-xl.max})",
+            "lineHeight": "{base.font.line-height.normal}"
+          },
+          "$type": "typography",
+          "$comment": "Stile per i titoli delle card o dei widget."
+        },
+        "body-base": {
+          "$value": {
+            "fontFamily": "{base.font.family.palette.sans}",
+            "fontWeight": "{base.font.weight.regular}",
+            "fontSize": "{base.font.size.base}",
+            "lineHeight": "{base.font.line-height.loose}"
+          },
+          "$type": "typography",
+          "$comment": "Stile standard per tutto il corpo del testo e paragrafi."
+        },
+        "body-sm": {
+          "$value": {
+            "fontFamily": "{base.font.family.palette.sans}",
+            "fontWeight": "{base.font.weight.regular}",
+            "fontSize": "clamp({base.font.fluid-size.fluid-body-sm.min}, {base.font.fluid-size.fluid-body-sm.ideal}, {base.font.fluid-size.fluid-body-sm.max})",
+            "lineHeight": "{base.font.line-height.normal}"
+          },
+          "$type": "typography",
+          "$comment": "Stile per testo secondario o didascalie."
+        },
+        "body-xs": {
+          "$value": {
+            "fontFamily": "{base.font.family.palette.sans}",
+            "fontWeight": "{base.font.weight.regular}",
+            "fontSize": "{base.font.size.xs}",
+            "lineHeight": "{base.font.line-height.normal}"
+          },
+          "$type": "typography",
+          "$comment": "Stile per testo terziario, come metadati o timestamp."
+        },
+        "label-md": {
+          "$value": {
+            "fontFamily": "{base.font.family.palette.sans}",
+            "fontWeight": "{base.font.weight.medium}",
+            "fontSize": "clamp({base.font.fluid-size.fluid-label-md.min}, {base.font.fluid-size.fluid-label-md.ideal}, {base.font.fluid-size.fluid-label-md.max})",
+            "lineHeight": "{base.font.line-height.normal}"
+          },
+          "$type": "typography",
+          "$comment": "Stile per etichette, bottoni e input di medie dimensioni."
+        },
+        "label-sm": {
+          "$value": {
+            "fontFamily": "{base.font.family.palette.sans}",
+            "fontWeight": "{base.font.weight.medium}",
+            "fontSize": "{base.font.size.xs}",
+            "lineHeight": "{base.font.line-height.normal}"
+          },
+          "$type": "typography",
+          "$comment": "Stile per etichette piccole, come quelle nelle tabelle."
+        },
+        "label-xs": {
+          "$value": {
+            "fontFamily": "{base.font.family.palette.sans}",
+            "fontWeight": "{base.font.weight.medium}",
+            "fontSize": "{base.font.size.xs}",
+            "lineHeight": "{base.font.line-height.normal}"
+          },
+          "$type": "typography",
+          "$comment": "Stile per etichette molto piccole, varianti per la tabella x-small."
+        },
+        "body-xxs": {
+          "$value": {
+            "fontFamily": "{base.font.family.palette.sans}",
+            "fontWeight": "{base.font.weight.regular}",
+            "fontSize": "{base.font.size.xxs}",
+            "lineHeight": "{base.font.line-height.normal}"
+          },
+          "$type": "typography",
+          "$comment": "Stile per testo piccolissimo, varianti per la tabella x-small."
+        },
+        "data-numeric": {
+            "$value": {
+              "fontFamily": "{base.font.family.palette.monospace}",
+              "fontWeight": "{base.font.weight.regular}",
+              "fontSize": "{base.font.size.sm}",
+              "lineHeight": "{base.font.line-height.normal}"
+            },
+            "$type": "typography",
+            "$comment": "Stile specifico per dati numerici in tabelle per garantire l'allineamento."
+        },
+        "metric-display": {
+          "$comment": "Stile per i valori principali nelle StatCard. Usa la tipografia fluida per adattarsi alle dimensioni dello schermo.",
+          "$value": {
+            "fontFamily": "{base.font.family.palette.sans}",
+            "fontWeight": "{base.font.weight.bold}",
+            "fontSize": "clamp({base.font.fluid-size.stat-display.min}, {base.font.fluid-size.stat-display.ideal}, {base.font.fluid-size.stat-display.max})",
+            "lineHeight": "{base.font.line-height.tight}"
+          },
+          "$type": "typography"
+        },
+        "label-xxs": {
+          "$value": {
+            "fontFamily": "{base.font.family.palette.sans}",
+            "fontWeight": "{base.font.weight.medium}",
+            "fontSize": "{base.font.size.xxs}",
+            "lineHeight": "{base.font.line-height.tight}"
+          },
+          "$type": "typography",
+          "$comment": "Stile per etichette minuscole, usato nelle StatCard su mobile."
+        },
+        "heading-sm": {
+            "$value": {
+                "fontFamily": "{base.font.family.palette.sans}",
+                "fontWeight": "{base.font.weight.semibold}",
+                "fontSize": "clamp({base.font.fluid-size.fluid-heading-sm.min}, {base.font.fluid-size.fluid-heading-sm.ideal}, {base.font.fluid-size.fluid-heading-sm.max})",
+                "lineHeight": "{base.font.line-height.normal}"
+            },
+            "$type": "typography"
+        },
+        "calendar-day-header": {
+            "$value": {
+                "fontFamily": "{base.font.family.palette.sans}",
+                "fontWeight": "{base.font.weight.medium}",
+                "fontSize": "clamp({base.font.fluid-size.fluid-calendar-day-header.min}, {base.font.fluid-size.fluid-calendar-day-header.ideal}, {base.font.fluid-size.fluid-calendar-day-header.max})",
+                "lineHeight": "{base.font.line-height.normal}"
+            },
+            "$type": "typography"
+        },
+        "calendar-day-number": {
+            "$value": {
+                "fontFamily": "{base.font.family.palette.sans}",
+                "fontWeight": "{base.font.weight.regular}",
+                "fontSize": "clamp({base.font.fluid-size.fluid-calendar-day-number.min}, {base.font.fluid-size.fluid-calendar-day-number.ideal}, {base.font.fluid-size.fluid-calendar-day-number.max})",
+                "lineHeight": "{base.font.line-height.normal}"
+            },
+            "$type": "typography"
+        },
+        "button-label-medium": {
+          "$value": {
+            "fontFamily": "{base.font.family.palette.sans}",
+            "fontWeight": "{base.font.weight.medium}",
+            "fontSize": "clamp({base.font.fluid-size.button-label-medium.min}, {base.font.fluid-size.button-label-medium.ideal}, {base.font.fluid-size.button-label-medium.max})",
+            "lineHeight": "{base.font.line-height.normal}"
+          },
+          "$type": "typography"
+        },
+        "button-label-small": {
+          "$value": {
+            "fontFamily": "{base.font.family.palette.sans}",
+            "fontWeight": "{base.font.weight.medium}",
+            "fontSize": "clamp({base.font.fluid-size.button-label-small.min}, {base.font.fluid-size.button-label-small.ideal}, {base.font.fluid-size.button-label-small.max})",
+            "lineHeight": "{base.font.line-height.normal}"
+          },
+          "$type": "typography"
+        }
+      }
+    }
+  }
+}

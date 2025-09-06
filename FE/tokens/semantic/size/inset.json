@@ -1,0 +1,33 @@
+{
+  "semantic": {
+    "size": {
+      "inset": {
+        "xs": {
+          "$value": "{base.size.spacing.2}",
+          "$type": "spacing",
+          "$comment": "8px. Padding minimo per elementi molto piccoli o densi."
+        },
+        "sm": {
+          "$value": "{base.size.spacing.3}",
+          "$type": "spacing",
+          "$comment": "12px. Padding per componenti piccoli come tag o bottoni piccoli."
+        },
+        "md": {
+          "$value": "{base.size.spacing.4}",
+          "$type": "spacing",
+          "$comment": "16px. Padding standard per la maggior parte dei componenti (bottoni medi, input)."
+        },
+        "lg": {
+          "$value": "{base.size.spacing.6}",
+          "$type": "spacing",
+          "$comment": "24px. Padding per contenitori più grandi come card e widget."
+        },
+        "xl": {
+          "$value": "{base.size.spacing.8}",
+          "$type": "spacing",
+          "$comment": "32px. Padding ampio per sezioni di pagina o modali."
+        }
+      }
+    }
+  }
+}

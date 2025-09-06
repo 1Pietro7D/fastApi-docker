@@ -1,0 +1,91 @@
+{
+  "base": {
+    "font": {
+      "fluid-size": {
+        "$comment": "Token per la tipografia fluida. Ogni dimensione contiene i tre valori (min, ideal, max) per la funzione CSS clamp(). I valori sono stati ricalibrati per essere meno aggressivi.",
+        "sm": {
+          "$comment": "Dimensione fluida piccola, adatta per metadati o testi ausiliari.",
+          "min": { "$value": "0.5rem", "$type": "dimension" },
+          "ideal": { "$value": "0.8vw", "$type": "dimension" },
+          "max": { "$value": "0.65rem", "$type": "dimension" }
+        },
+        "md": {
+          "$comment": "Dimensione fluida media, per testo di corpo o secondario.",
+          "min": { "$value": "0.6rem", "$type": "dimension" },
+          "ideal": { "$value": "1.0vw", "$type": "dimension" },
+          "max": { "$value": "0.75rem", "$type": "dimension" }
+        },
+        "lg": {
+          "$comment": "Dimensione fluida grande, per titoli o dati importanti.",
+          "min": { "$value": "0.7rem", "$type": "dimension" },
+          "ideal": { "$value": "1.2vw", "$type": "dimension" },
+          "max": { "$value": "0.9rem", "$type": "dimension" }
+        },
+        "xl": {
+          "$comment": "Dimensione fluida extra-large, per il P&L nel calendario.",
+          "min": { "$value": "0.7rem", "$type": "dimension" },
+          "ideal": { "$value": "1.5vw", "$type": "dimension" },
+          "max": { "$value": "1.1rem", "$type": "dimension" }
+        },
+        "xs": {
+          "$comment": "Dimensione fluida extra-piccola, per il numero di trade.",
+          "min": { "$value": "0.6rem", "$type": "dimension" },
+          "ideal": { "$value": "0.9vw", "$type": "dimension" },
+          "max": { "$value": "0.8rem", "$type": "dimension" }
+        },
+        "xxs": {
+          "$comment": "Dimensione fluida microscopica, per statistiche extra come WR%.",
+          "min": { "$value": "0.5rem", "$type": "dimension" },
+          "ideal": { "$value": "0.7vw", "$type": "dimension" },
+          "max": { "$value": "0.65rem", "$type": "dimension" }
+        },
+        "stat-display": {
+          "$comment": "Dimensione fluida per i valori principali nelle StatCard, ottimizzata per mobile.",
+          "min": { "$value": "1rem", "$type": "dimension" },
+          "ideal": { "$value": "2vw", "$type": "dimension" },
+          "max": { "$value": "1.5rem", "$type": "dimension" }
+        },
+        "fluid-heading-xl": {
+          "min": { "$value": "{base.font.size.lg}", "$type": "dimension" },
+          "ideal": { "$value": "3vw", "$type": "dimension" },
+          "max": { "$value": "{base.font.size.xl}", "$type": "dimension" }
+        },
+        "fluid-heading-sm": {
+          "min": { "$value": "{base.font.size.sm}", "$type": "dimension" },
+          "ideal": { "$value": "2vw", "$type": "dimension" },
+          "max": { "$value": "{base.font.size.base}", "$type": "dimension" }
+        },
+        "fluid-body-sm": {
+          "min": { "$value": "{base.font.size.xs}", "$type": "dimension" },
+          "ideal": { "$value": "1.5vw", "$type": "dimension" },
+          "max": { "$value": "{base.font.size.sm}", "$type": "dimension" }
+        },
+        "fluid-label-md": {
+          "min": { "$value": "{base.font.size.xs}", "$type": "dimension" },
+          "ideal": { "$value": "1.5vw", "$type": "dimension" },
+          "max": { "$value": "{base.font.size.sm}", "$type": "dimension" }
+        },
+        "fluid-calendar-day-header": {
+          "min": { "$value": "{base.font.size.xxs}", "$type": "dimension" },
+          "ideal": { "$value": "1.2vw", "$type": "dimension" },
+          "max": { "$value": "{base.font.size.xs}", "$type": "dimension" }
+        },
+        "fluid-calendar-day-number": {
+          "min": { "$value": "{base.font.size.xxs}", "$type": "dimension" },
+          "ideal": { "$value": "1vw", "$type": "dimension" },
+          "max": { "$value": "{base.font.size.xs}", "$type": "dimension" }
+        },
+        "button-label-medium": {
+          "min": { "$value": "{base.font.size.xs}", "$type": "dimension" },
+          "ideal": { "$value": "1.5vw", "$type": "dimension" },
+          "max": { "$value": "{base.font.size.sm}", "$type": "dimension" }
+        },
+        "button-label-small": {
+          "min": { "$value": "{base.font.size.xxs}", "$type": "dimension" },
+          "ideal": { "$value": "1.2vw", "$type": "dimension" },
+          "max": { "$value": "{base.font.size.xs}", "$type": "dimension" }
+        }
+      }
+    }
+  }
+}

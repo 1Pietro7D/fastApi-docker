@@ -1,0 +1,48 @@
+{
+  "base": {
+    "layer": {
+      "z-index": {
+        "base": {
+          "$value": "0",
+          "$type": "zIndex",
+          "$comment": "Il livello di base per gli elementi nel flusso normale del documento."
+        },
+        "above": {
+          "$value": "10",
+          "$type": "zIndex",
+          "$comment": "Per elementi che devono stare leggermente sopra il flusso base (es. highlights)."
+        },
+        "dropdown": {
+          "$value": "1000",
+          "$type": "zIndex",
+          "$comment": "Per pannelli a comparsa come i menu dropdown."
+        },
+        "sticky": {
+          "$value": "1100",
+          "$type": "zIndex",
+          "$comment": "Per elementi fissi durante lo scroll, come header o footer."
+        },
+        "sidebar-overlay": {
+          "$value": "1200",
+          "$type": "zIndex",
+          "$comment": "Per la sidebar quando si comporta come un overlay su mobile."
+        },
+        "overlay": {
+          "$value": "1300",
+          "$type": "zIndex",
+          "$comment": "Per lo sfondo semi-trasparente dietro una modale (backdrop/scrim)."
+        },
+        "modal": {
+          "$value": "1400",
+          "$type": "zIndex",
+          "$comment": "Per le finestre modali, che devono stare sopra l'overlay."
+        },
+        "notification": {
+          "$value": "2000",
+          "$type": "zIndex",
+          "$comment": "Per le notifiche (toast), che devono apparire sopra a tutto."
+        }
+      }
+    }
+  }
+}

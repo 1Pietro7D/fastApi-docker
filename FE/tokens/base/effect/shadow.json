@@ -1,0 +1,28 @@
+{
+  "base": {
+    "effect": {
+      "shadow": {
+        "sm": {
+          "$value": "0 1px 2px 0 rgba(0, 0, 0, 0.5)",
+          "$type": "boxShadow",
+          "$comment": "Ombra molto sottile per piccoli elementi in rilievo."
+        },
+        "md": {
+          "$value": "0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4)",
+          "$type": "boxShadow",
+          "$comment": "Ombra standard per card e widget per dare un senso di elevazione."
+        },
+        "lg": {
+          "$value": "0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.4)",
+          "$type": "boxShadow",
+          "$comment": "Ombra ampia per elementi fluttuanti come modali o dropdown."
+        },
+        "focus-ring": {
+          "$value": "0 0 0 3px rgba(37, 99, 235, 0.4)",
+          "$type": "boxShadow",
+          "$comment": "Anello di focus per accessibilità, ora utilizza una versione trasparente del nuovo colore del brand (blu)."
+        }
+      }
+    }
+  }
+}

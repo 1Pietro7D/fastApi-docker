@@ -1,0 +1,13 @@
+{
+  "base": {
+    "font": {
+      "line-height": {
+        "$comment": "Token per l'altezza di riga (line-height). I valori sono unitless per essere relativi al font-size.",
+        "none":   { "$value": 1, "$type": "lineHeight", "$comment": "Nessuna spaziatura extra." },
+        "tight":  { "$value": 1.2, "$type": "lineHeight", "$comment": "Per testo compatto, come titoli o UI dense." },
+        "normal": { "$value": 1.5, "$type": "lineHeight", "$comment": "Altezza di riga standard per il testo di corpo." },
+        "loose":  { "$value": 1.7, "$type": "lineHeight", "$comment": "Altezza di riga più ariosa per paragrafi lunghi." }
+      }
+    }
+  }
+}

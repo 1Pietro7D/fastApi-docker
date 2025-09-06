@@ -1,0 +1,33 @@
+{
+  "base": {
+    "animation": {
+      "duration": {
+        "faster": {
+          "$value": "100ms",
+          "$type": "duration",
+          "$comment": "Per transizioni quasi istantanee, come il cambio di colore di sfondo di un elemento."
+        },
+        "fast": {
+          "$value": "150ms",
+          "$type": "duration",
+          "$comment": "Per animazioni rapide e reattive, come effetti hover su piccoli elementi."
+        },
+        "base": {
+          "$value": "250ms",
+          "$type": "duration",
+          "$comment": "La durata di base per la maggior parte delle transizioni standard (es. espansione di un accordion)."
+        },
+        "slow": {
+          "$value": "400ms",
+          "$type": "duration",
+          "$comment": "Per animazioni più ampie e d'impatto, come l'apparizione di un pannello laterale (sidebar)."
+        },
+        "slower": {
+          "$value": "500ms",
+          "$type": "duration",
+          "$comment": "Per elementi di grandi dimensioni come la comparsa di una finestra modale a schermo intero."
+        }
+      }
+    }
+  }
+}

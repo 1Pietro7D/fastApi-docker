@@ -1,0 +1,7 @@
+/**
+ * Questo file è il punto di ingresso unico per tutti i design token.
+ * Importa prima i token di base (privati) e poi i token semantici (pubblici).
+ * L'applicazione dovrebbe importare solo questo file per accedere ai token.
+ */
+@import "./_base.css";
+@import "./tokens.css";

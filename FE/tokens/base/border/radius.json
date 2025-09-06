@@ -1,0 +1,28 @@
+{
+  "base": {
+    "border": {
+      "radius": {
+        "sm": {
+          "$value": "0.25rem",
+          "$type": "borderRadius",
+          "$comment": "4px. Per elementi piccoli e interni, come tag o highlight."
+        },
+        "md": {
+          "$value": "0.5rem",
+          "$type": "borderRadius",
+          "$comment": "8px. Il radius standard per la maggior parte dei componenti interattivi (bottoni, input)."
+        },
+        "lg": {
+          "$value": "1rem",
+          "$type": "borderRadius",
+          "$comment": "16px. Per contenitori di livello superiore come card, widget e modali."
+        },
+        "full": {
+          "$value": "9999px",
+          "$type": "borderRadius",
+          "$comment": "Per elementi a forma di 'pillola' come avatar o switch."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "semantic": {
+    "color": {
+      "surface": {
+        "page":    { "$value": "{base.color.gray.50}", "$type": "color", "$comment": "Sfondo principale dell'applicazione, leggermente off-white." },
+        "primary": { "$value": "{base.color.white}", "$type": "color", "$comment": "Sfondo per contenitori primari come card e widget." },
+        "secondary": { "$value": "{base.color.gray.100}", "$type": "color", "$comment": "Sfondo per aree secondarie o per elementi in stato hover." },
+        "disabled":{ "$value": "{base.color.gray.100}", "$type": "color", "$comment": "Sfondo per elementi disabilitati." }
+      },
+      "text": {
+        "primary":   { "$value": "{base.color.gray.900}", "$type": "color", "$comment": "Testo principale ad alto contrasto." },
+        "secondary": { "$value": "{base.color.gray.600}", "$type": "color", "$comment": "Testo secondario per informazioni di supporto." },
+        "tertiary":  { "$value": "{base.color.gray.400}", "$type": "color", "$comment": "Testo a basso contrasto per placeholder o metadati." },
+        "disabled":  { "$value": "{base.color.gray.400}", "$type": "color", "$comment": "Testo per elementi disabilitati." },
+        "on-brand":  { "$value": "{base.color.white}", "$type": "color", "$comment": "Testo da usare sopra sfondi colorati (es. bottoni primari)." },
+        "interactive": { "$value": "{base.color.blue.600}", "$type": "color", "$comment": "Testo per link o elementi testuali interattivi." }
+      },
+      "interactive": {
+        "primary":   { "default": { "$value": "{base.color.blue.600}", "$type": "color", "$comment": "Sfondo per bottoni e azioni primarie." },
+                       "hover":   { "$value": "{base.color.blue.500}", "$type": "color", "$comment": "Stato hover per azioni primarie." } },
+        "secondary": { "default": { "$value": "{base.color.gray.100}", "$type": "color", "$comment": "Sfondo per bottoni e azioni secondarie." },
+                       "hover":   { "$value": "{base.color.gray.200}", "$type": "color", "$comment": "Stato hover per azioni secondarie." } }
+      },
+      "feedback": {
+        "positive": {
+          "text": { "$value": "{base.color.green.600}", "$type": "color", "$comment": "Testo per indicare profitto o successo." },
+          "surface": { "$value": "rgba(22, 163, 74, 0.1)", "$type": "color", "$comment": "Sfondo leggero per evidenziare aree di profitto." },
+          "background-rgb": { "$value": "{base.color.green.600-rgb}", "$type": "color", "$comment": "Token RGB per il colore di feedback positivo. Da usare con rgba() in JS." }
+        },
+        "negative": {
+          "text": { "$value": "{base.color.red.600}", "$type": "color", "$comment": "Testo per indicare perdita o errore." },
+          "surface": { "$value": "rgba(220, 38, 38, 0.1)", "$type": "color", "$comment": "Sfondo leggero per evidenziare aree di perdita." },
+          "background-rgb": { "$value": "{base.color.red.600-rgb}", "$type": "color", "$comment": "Token RGB per il colore di feedback negativo. Da usare con rgba() in JS." }
+        }
+      },
+      "border": {
+        "default":  { "$value": "{base.color.gray.200}", "$type": "color", "$comment": "Bordo standard per contenitori e input." },
+        "subtle":   { "$value": "{base.color.gray.100}", "$type": "color", "$comment": "Bordo a basso contrasto per divisori." },
+        "focus":    { "$value": "{base.color.blue.500}", "$type": "color", "$comment": "Bordo o outline per elementi in stato di focus." }
+      },
+      "overlay": {
+        "background": { "$value": "{base.color.black-alpha-50}", "$type": "color", "$comment": "Sfondo per gli overlay, come quello del menu mobile." }
+      }
+    }
+  }
+}
