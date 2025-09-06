@@ -1,4 +1,7 @@
 # app/Router/routes.py
+# Router aggregatore principale: Auth, Users, Roles, User↔Roles, Trades
+
+from __future__ import annotations
 
 from fastapi import APIRouter, Depends
 
@@ -10,10 +13,12 @@ from app.Controllers.users_controller import UsersController
 from app.Controllers.roles_controller import RolesController
 from app.Controllers.user_roles_controller import UserRolesController
 from app.Controllers.auth_controller import AuthController
+from app.Controllers.trades_controller import TradesController
 
 # 📦 Schemi per le response (tipi Pydantic)
 from app.Schemas.auth_user import AuthUserRead
 from app.Schemas.role import RoleRead
+from app.Schemas.trade import TradeRead
 from app.Schemas.auth_session import (
     LoginResponse,
     RegisterResponse,
@@ -25,6 +30,7 @@ users = UsersController()
 roles = RolesController()
 user_roles = UserRolesController()
 auth = AuthController()
+trades = TradesController()
 
 # Router aggregatore principale
 router = APIRouter()
@@ -59,7 +65,7 @@ router.include_router(router_auth)
 router_users = APIRouter(
     prefix="/api/v1/users",
     tags=["Users"],
-    dependencies=[Depends(require_roles(["admin"]))],  # protezione group-level
+    dependencies=[Depends(require_roles(["admin"]))],
 )
 
 router_users.get("/", response_model=list[AuthUserRead])(users.list_users)
@@ -115,3 +121,20 @@ router_user_roles.delete(
 
 # monta il blocco user-roles nel router principale
 router.include_router(router_user_roles)
+
+# ───────────────────────────────
+# 📈 TRADES (pubblico: nessuna dipendenza auth/ruoli)
+# ───────────────────────────────
+router_trades = APIRouter(
+    prefix="/api/v1/trades",
+    tags=["Trades"],
+)
+
+router_trades.get("/", response_model=list[TradeRead])(trades.list_trades)
+router_trades.get("/{trade_id}", response_model=TradeRead)(trades.get_trade)
+router_trades.post("/", response_model=TradeRead, status_code=201)(trades.create_trade)
+router_trades.put("/{trade_id}", response_model=TradeRead)(trades.update_trade)
+router_trades.get("/calendar/data")(trades.calendar_data)
+router_trades.get("/performance/vantage-score")(trades.vantage_score)
+
+router.include_router(router_trades)
